@@ -197,7 +197,17 @@ def setup_sites_available_conf(site_name,site_path):
 				enable_site_sp=subprocess.Popen(enble_site_cmd,stdout=subprocess.PIPE,shell=True)
 				(is_site_enabled,error_enabled_site) = enable_site_sp.communicate()
 				if(is_site_enabled):
+						ask_to_disable_000=input('Are you want to disable 000-default.conf file ?? (Yes | No): ').lower()
+						if(ask_to_disable_000 == 'y' or ask_to_disable_000 == 'yes'):
+							disable_000_site_cmd='sudo a2dissite 000-default.conf'
+							disable_000_site_sp=subprocess.Popen(disable_000_site_cmd,stdout=subprocess.PIPE,shell=True)
+							(is_site_disabled,error_disabled_site) = disable_000_site_sp.communicate()
+							if(is_site_disabled):
+								print('000-default.conf disabled successfully.')
+							else:
+								print('Unable to disable 000-default.conf')
 						
+							
 						os.system('sudo service apache2 restart')
 						time.sleep(2)
 						print('Apache Server Restarted...')
