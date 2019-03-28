@@ -91,7 +91,9 @@ def install_wordpress(site_name,site_path):
 		wp_install_sp = subprocess.Popen(wp_install,stdout=subprocess.PIPE,shell=True)
 		(wp_install_res,wp_install_err) = wp_install_sp.communicate()
 		if(wp_install_res):
-			print('\nWordpress site installed.')
+			print('Wordpress site installed.')
+			#change ownership to www-data
+			os.system('sudo chown -R www-data:www-data '+site_path)
 			setup_sites_available_conf(site_name,site_path)
 	else:
 		print('Installing WP-CLI..')
