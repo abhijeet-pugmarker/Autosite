@@ -52,8 +52,8 @@ def step_one(site_name):
 			#Setting Permissions
 			time.sleep(2)
 			print('Setting Permissions...')
-			#ownership='sudo chown -R $USER:$USER '+site_path
-			ownership='sudo chown -R www-data:www-data '+site_path
+			ownership='sudo chown -R $USER:$USER '+site_path
+			#ownership='sudo chown -R www-data:www-data '+site_path
 			os.system(ownership)
 			start_install = True
 			
