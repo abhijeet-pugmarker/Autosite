@@ -11,6 +11,7 @@ def myHelp():
 	print('Help\n--------')
 	print('autosite --help OR -h')
 	print('autosite create site <site_name>')
+	print('autosite delete site <site_name>')
 	print('\n')
 #@with_goto
 def step_one(site_name):
@@ -26,6 +27,8 @@ def step_one(site_name):
 				#Remove Directory
 				remove_directory='rm -r /var/www/html/'+site_name
 				time.sleep(3)
+				change_permission_to_current_user='sudo chown -R $USER:$USER '+site_path
+				os.system(change_permission_to_current_user)
 				os.system(remove_directory)
 				step_one(site_name)
 			elif(dir_override == 'no' or dir_override == 'y'):
@@ -197,15 +200,16 @@ def setup_sites_available_conf(site_name,site_path):
 				enable_site_sp=subprocess.Popen(enble_site_cmd,stdout=subprocess.PIPE,shell=True)
 				(is_site_enabled,error_enabled_site) = enable_site_sp.communicate()
 				if(is_site_enabled):
-						ask_to_disable_000=input('Are you want to disable 000-default.conf file ?? (Yes | No): ').lower()
-						if(ask_to_disable_000 == 'y' or ask_to_disable_000 == 'yes'):
-							disable_000_site_cmd='sudo a2dissite 000-default.conf'
-							disable_000_site_sp=subprocess.Popen(disable_000_site_cmd,stdout=subprocess.PIPE,shell=True)
-							(is_site_disabled,error_disabled_site) = disable_000_site_sp.communicate()
-							if(is_site_disabled):
-								print('000-default.conf disabled successfully.')
-							else:
-								print('Unable to disable 000-default.conf')
+						if(os.path.isfile('/etc/apache2/sites-enabled/000-default.conf')):
+							ask_to_disable_000=input('Are you want to disable 000-default.conf file ?? (Yes | No): ').lower()
+							if(ask_to_disable_000 == 'y' or ask_to_disable_000 == 'yes'):
+								disable_000_site_cmd='sudo a2dissite 000-default.conf'
+								disable_000_site_sp=subprocess.Popen(disable_000_site_cmd,stdout=subprocess.PIPE,shell=True)
+								(is_site_disabled,error_disabled_site) = disable_000_site_sp.communicate()
+								if(is_site_disabled):
+									print('000-default.conf disabled successfully.')
+								else:
+									print('Unable to disable 000-default.conf')
 						
 							
 						os.system('sudo service apache2 restart')
@@ -243,4 +247,32 @@ def is_valid_site_ip(site_ip):
 		return True
 	else:
 		return False
+		
+def delete_site(site_name):
+	if(os.path.exists('/var/www/html')):
+		if(os.path.exists('/var/www/html/'+site_name)):
+			confirm_remove= input('Are you sure to remove site permenently ? (Yes | No): ').lower()
+			if(confirm_remove == 'yes' or confirm_remove == 'y'):
+				if(os.path.isfile('/etc/apache2/sites-enabled/'+site_name+'.conf')):
+					print('Disabling site...')
+					time.sleep(1)
+					disable_site='sudo a2dissite '+site_name+'.conf'
+					disable_site_sp=subprocess.Popen(disable_site,stdout=subprocess.PIPE,shell=True)
+					(disable_ok,disable_err) = disable_site_sp.communicate()
+					if(disable_ok): 
+						print('Site disabled...')
+						delete_available='sudo rm -r /etc/apache2/sites-available/'+site_name+'.conf'
+						os.system(delete_available)
+						delete_site='sudo rm -r /var/www/html/'+site_name+'/'
+						os.system(delete_site)
+						os.system('sudo service apache2 restart')
+						time.sleep(2)
+						print('Success: Site removed. Please remove your site address from hosts file (/etc/hosts).')
+						
+			else:
+				print('You cancelled process to remove site.')
+		else:
+			print('Error: Site directory not found !')
+	else:
+		print('Error: Make sure apache server is installed. /var/www/html not found !')
 		
