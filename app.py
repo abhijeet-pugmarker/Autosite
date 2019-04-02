@@ -25,6 +25,20 @@ if(len(all_argv) > 0):
 				fn.delete_site(site_name)
 		else:
 			print("autosite delete site <site_name>")
+	elif(all_argv[0] == 'disable'):
+		if(len(all_argv) == 3):
+			if(all_argv[1] == 'site'):
+				site_name = all_argv[2]
+				fn.disable_site(site_name)
+		else:
+			print("autosite disable site <site_name>")
+	elif(all_argv[0] == 'enable'):
+		if(len(all_argv) == 3):
+			if(all_argv[1] == 'site'):
+				site_name = all_argv[2]
+				fn.enable_site(site_name)
+		else:
+			print("autosite enable site <site_name>")
 	elif(len(all_argv) == 1):
 		if(all_argv[0] == '-h' or all_argv[0] == '--help'):
 			fn.myHelp()

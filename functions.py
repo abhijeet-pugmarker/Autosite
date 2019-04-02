@@ -276,3 +276,38 @@ def delete_site(site_name):
 	else:
 		print('Error: Make sure apache server is installed. /var/www/html not found !')
 		
+def disable_site(site_name):
+	confirm_disable= input('Are you sure to disable site? (Yes | No): ').lower()
+	if(confirm_disable == 'yes' or confirm_disable == 'y'):
+		if(os.path.isfile('/etc/apache2/sites-available/'+site_name+'.conf')):
+			if(os.path.isfile('/etc/apache2/sites-enabled/'+site_name+'.conf')):
+				print('Disabling site...')
+				time.sleep(1)
+				disable_site='sudo a2dissite '+site_name+'.conf'
+				disable_site_sp=subprocess.Popen(disable_site,stdout=subprocess.PIPE,shell=True)
+				(disable_ok,disable_err) = disable_site_sp.communicate()
+				if(disable_ok): 
+					os.system('sudo service apache2 restart')
+					time.sleep(2)
+					print('Site disabled...')
+		else:
+			print('Error: Site does not exists !')
+	else:
+		print('You cancelled process to disable site.')
+		
+def enable_site(site_name):
+	if(os.path.isfile('/etc/apache2/sites-available/'+site_name+'.conf')):
+		print('Enabling site...')
+		time.sleep(1)
+		enable_site='sudo a2ensite '+site_name+'.conf'
+		enable_site_sp=subprocess.Popen(enable_site,stdout=subprocess.PIPE,shell=True)
+		(enable_ok,enable_err) = enable_site_sp.communicate()
+		if(enable_ok): 
+			os.system('sudo service apache2 restart')
+			time.sleep(2)
+			print('Site Enabled...')
+	else:
+		print('Error: Site does not exists !')
+	
+	
+	
