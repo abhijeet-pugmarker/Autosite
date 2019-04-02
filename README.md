@@ -7,18 +7,18 @@
 </div>
 <div>
   <h4>Create Site</h4>
-  <code>$ autosite create site <site_name></code>
+  <code>$ autosite create site &lt;site_name&gt;</code>
     E.g. example.com
 </div>    
 <div>
   <h4>Delete Site</h4>
-  <code>$ autosite delete site <site_name></code>
+  <code>$ autosite delete site &lt;site_name&gt;</code>
 </div>
 <div>
   <h4>Disable Site</h4>
-  <code>$ autosite disable site <site_name></code>
+  <code>$ autosite disable site &lt;site_name&gt;</code>
 </div>
 <div>
   <h4>Enable Site</h4>
-  <code>$ autosite enable site <site_name></code>
+  <code>$ autosite enable site &lt;site_name&gt;</code>
 </div>
