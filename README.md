@@ -4,6 +4,7 @@
   <code>$ git clone https://github.com/abhijeet-pugmarker/Autosite.git </code><br>
   <code>$ sudo chmod +x install.sh </code></br>
   <code>$ ./install.sh </code></br>
+  <p><strong>Note</strong>: If command autosite not found, then reopen terminal.</p>
 </div>
 <div>
   <h4>Create Site</h4>
