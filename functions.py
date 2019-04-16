@@ -90,7 +90,7 @@ def install_wordpress(site_name,site_path):
 	if(os.path.exists(wp_cli_path)):
 		#os.system('wp core download')
 		print('Installing Wordpress setup please wait...')
-		wp_install = 'wp core download --path='+site_path
+		wp_install = 'wp core download --path='+site_path+' --allow-root'
 		wp_install_sp = subprocess.Popen(wp_install,stdout=subprocess.PIPE,shell=True)
 		(wp_install_res,wp_install_err) = wp_install_sp.communicate()
 		if(wp_install_res):
